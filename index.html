@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Links — Public Hub</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent: linear-gradient(90deg,#7c3aed,#06b6d4);
+      --text:#e6eef8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+        radial-gradient(800px 400px at 90% 90%, rgba(6,182,212,0.08), transparent 6%),
+        var(--bg);
+      font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      color:var(--text);
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:760px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:28px;
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .avatar{
+      width:64px;height:64px;border-radius:12px;
+      background:conic-gradient(from 180deg at 50% 50%, #06b6d4, #7c3aed);
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:#06232b;
+      font-size:22px;
+      box-shadow:0 6px 18px rgba(12,10,22,0.6);
+    }
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 0 0;color:rgba(230,238,248,0.75);font-size:13px}
+    .links{display:grid;gap:12px;margin-top:20px}
+    a.link{
+      display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      text-decoration:none;color:var(--text);
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    a.link:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+    .left{display:flex;gap:12px;align-items:center}
+    .dot{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .meta{font-size:13px;color:rgba(230,238,248,0.8)}
+    footer{margin-top:18px;text-align:center;color:rgba(230,238,248,0.6);font-size:13px}
+    /* responsive */
+    @media (max-width:520px){
+      .card{padding:18px}
+      .avatar{width:56px;height:56px}
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <header>
+      <div class="avatar">YS</div>
+      <div>
+        <h1>Your Shareable Links</h1>
+        <p class="lead">A simple public page with all your important links. Copy this page URL and share it.</p>
+      </div>
+    </header>
+
+    <div class="links" id="links">
+      <!-- Example links - replace or add more -->
+      <a class="link" href="https://example.com" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="dot">A</div>
+          <div>
+            <div class="meta">My Portfolio</div>
+            <div style="font-size:13px;color:rgba(230,238,248,0.7)">Shows recent projects</div>
+          </div>
+        </div>
+        <div>→</div>
+      </a>
+
+      <a class="link" href="https://example.com/resume.pdf" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="dot">R</div>
+          <div>
+            <div class="meta">Resume (PDF)</div>
+            <div style="font-size:13px;color:rgba(230,238,248,0.7)">Download resume</div>
+          </div>
+        </div>
+        <div>→</div>
+      </a>
+
+      <a class="link" href="mailto:you@example.com" target="_blank" rel="noopener">
+        <div class="left">
+          <div class="dot">@</div>
+          <div>
+            <div class="meta">Email</div>
+            <div style="font-size:13px;color:rgba(230,238,248,0.7)">Reach out</div>
+          </div>
+        </div>
+        <div>→</div>
+      </a>
+    </div>
+
+    <footer>Made with ♥ • Public & free</footer>
+  </main>
+
+  <!-- Optional: a tiny script to load links from JSON file "links.json" if you prefer -->
+  <script>
+    // If you host a links.json in the same folder, this script will replace the defaults.
+    // links.json format example: [{ "title":"Portfolio", "url":"https://...", "desc":"..." }]
+    (async function(){
+      try{
+        const resp = await fetch('links.json');
+        if(!resp.ok) return;
+        const arr = await resp.json();
+        if(!Array.isArray(arr) || arr.length===0) return;
+        const container = document.getElementById('links');
+        container.innerHTML = '';
+        arr.forEach((it,i)=>{
+          const a = document.createElement('a');
+          a.className='link';
+          a.href=it.url || '#';
+          a.target='_blank';
+          a.rel='noopener';
+          a.innerHTML = `<div class="left"><div class="dot">${(it.icon||it.title||'L').charAt(0)}</div><div><div class="meta">${it.title||'Link '+(i+1)}</div><div style="font-size:13px;color:rgba(230,238,248,0.7)">${it.desc||''}</div></div></div><div>→</div>`;
+          container.appendChild(a);
+        });
+      }catch(e){/* ignore - stay with embedded links */ }
+    })();
+  </script>
+</body>
+</html>
